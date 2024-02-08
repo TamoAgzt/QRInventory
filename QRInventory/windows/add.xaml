@@ -5,14 +5,72 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:QRInventory.windows"
         mc:Ignorable="d"
-        Title="add" Height="720" Width="960">
+        Title="add"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="CanResize"
+        WindowState="Maximized"
+        MinHeight="720"
+        MinWidth="960"
+        >
+    <Window.Resources>
+        <Style TargetType="TextBox">
+            <Setter Property="FontSize" Value="24"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+        <Style TargetType="ComboBox">
+            <Setter Property="FontSize" Value="24"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="FontSize" Value="30"/>
+            <Setter Property="Height" Value="60"/>
+            <Setter Property="Width" Value="300"/>
+            <Setter Property="MinHeight" Value="60"/>
+            <Setter Property="MinWidth" Value="300"/>
+        </Style>
+    </Window.Resources>
 
-    <Grid>
-        <StackPanel HorizontalAlignment="Left">
-            <Button x:Name="HOME" Content="HOME" Height="50" Width="200" Click="HOME_Click" FontSize="24px"></Button>
-            <TextBox x:Name="input" Height="50" FontSize="24px" Width="1440" Background="LightGray"/>
-            <Button x:Name="GENERATE" Content="GENERATE" Height="80" Width="600" Click="GENERATE_Click" FontSize="36px"/>
-            <Image x:Name="imgQR" Height="400"/>
-        </StackPanel>
+    <Grid Margin="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Left Column -->
+        <TextBox x:Name="tbName" Text="Name" MinHeight="30" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3"/>
+        <TextBox x:Name="tbManufacturer" Text="Manufacturer" MinHeight="30" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"/>
+        <TextBox x:Name="tbType" Text="Type" MinHeight="30" Grid.Row="1" Grid.Column="2"/>
+        <TextBox x:Name="tbDescription" Text="Description" MinHeight="30" MaxLength="250" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" VerticalAlignment="Stretch"/>
+        <TextBox x:Name="tbAmount" Text="Amount" MinHeight="30" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2"/>
+        <ComboBox x:Name="tbUnit" Text="Unit" MinHeight="30" Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="1" />
+        <TextBox x:Name="tbMinAmount" Text="Minimum Amount" MinHeight="30" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="1"/>
+        <TextBox x:Name="tbMaxAmount" Text="Maximum Amount" MinHeight="30" Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="1"/>
+        <TextBox x:Name="tbUnitReadOnly" Grid.Row="5" Grid.Column="2" Grid.ColumnSpan="1" IsReadOnly="True"/>
+        <ComboBox x:Name="tbValuta" Text="Valuta" MinHeight="30" Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="1"/>
+        <TextBox x:Name="tbCost" Text="Cost per unit" MinHeight="30" Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="2"/>
+        <TextBox x:Name="tbStore" Text="Aquired from" MinHeight="30" Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="3"/>
+        <Button x:Name="HOME" Content="CANCEL" MinHeight="50" Width="Auto" MinWidth="200" Click="HOME_Click" Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="3"/>
+
+        <!-- Right Column -->
+        <Image x:Name="imgQR" Height="Auto" MinHeight="300" MinWidth="300" Grid.Row="1" Grid.ColumnSpan="2" Grid.RowSpan="3" Grid.Column="3" Margin="10"/>
+        <TextBox x:Name="tbUUID" Text="Unique Identifier" Height="30" MinHeight="30" Grid.Row="5" Grid.ColumnSpan="2" Grid.Column="3" IsReadOnly="True" HorizontalAlignment="Center"/>
+        <Button x:Name="CHECK" Content="CHECK" Click="CHECK_Click" Grid.Row="7" Grid.ColumnSpan="2" Grid.Column="3"/>
+        <Button x:Name="SAVE" Content="SAVE" Click="SAVE_Click" Grid.Row="8" Grid.ColumnSpan="2" Grid.Column="3"/>
+
     </Grid>
 </Window>

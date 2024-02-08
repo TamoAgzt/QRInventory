@@ -5,18 +5,42 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:QRInventory"
         mc:Ignorable="d"
-        Title="MainWindow" Height="720" Width="960">
+        Title="MainWindow"
+        x:Name="QRInventoryWindow"
+        Height="720"
+        Width="960"
+        MinHeight="500"
+        MinWidth="720"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="CanResize"
+        WindowState="Maximized"        
+        >
+    <Window.Resources>
+        <Style TargetType="ListBox">
+            <Setter Property="FontSize" Value="24"/>
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="FontSize" Value="30"/>
+            <Setter Property="Height" Value="100"/>
+            <Setter Property="Width" Value="100"/>
+            <Setter Property="MinHeight" Value="100"/>
+            <Setter Property="MinWidth" Value="100"/>
+        </Style>
+    </Window.Resources>
+    
+    <Grid Margin="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
-    <Grid>
-        <StackPanel>
-            <Button x:Name="SCAN" Content="SCAN" Height="100" Width="100" Click="SCAN_Click"></Button>
-            <Button x:Name="ADD" Content="ADD" Height="100" Width="100" Click="ADD_Click"></Button>
-            <TextBox x:Name="tbName" Height="30" FontSize="20"/>
-            <TextBox x:Name="tbBrand" Height="30" FontSize="20"/>
-            <TextBox x:Name="tbType" Height="30" FontSize="20"/>
-            <TextBox x:Name="tbDescription" Height="30" FontSize="20"/>
-            <TextBox x:Name="tbShort" Height="30" FontSize="20" Visibility="Hidden" />
-            <Button x:Name="SAVE" Content="SAVE" Height="50" Width="300" Click="SAVE_Click"></Button>
-        </StackPanel>
+        <ListBox x:Name="itemList" BorderBrush="Azure" Margin="10" Grid.Row="0" Grid.RowSpan="2" Grid.Column="0"/>
+
+        <Button x:Name="ADD" Content="ADD" Grid.Row="0" Grid.Column="1" Click="ADD_Click" Margin="0,0,0,10" VerticalAlignment="Bottom" HorizontalAlignment="Center"></Button>
+        <Button x:Name="SCAN" Content="SCAN" Grid.Row="1" Grid.Column="1" Click="SCAN_Click" Margin="0,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Center"/>
     </Grid>
 </Window>

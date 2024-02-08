@@ -13,8 +13,9 @@ namespace QRInventory
     /// </summary>
     public partial class App : Application
     {
-        static string dbName = "dbInventory.db";
-        static string fPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-        public static string dbPath = System.IO.Path.Combine(fPath, dbName);
+        //static string dbName = "dbInventory.db";
+        //static string fPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+        //public static string dbPath = System.IO.Path.Combine(fPath, dbName);
+        public static string dbPath = "./Resources/dbInventory.db";
     }
 }

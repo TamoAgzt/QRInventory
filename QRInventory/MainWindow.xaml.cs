@@ -25,10 +25,13 @@ namespace QRInventory
     /// </summary>
     public partial class MainWindow : Window
     {
+        List<Inventory> items;
 
         public MainWindow()
         {
             InitializeComponent();
+            items = new List<Inventory>();
+            showitems();
         }
 
         private void ADD_Click(object sender, RoutedEventArgs e)
@@ -45,34 +48,18 @@ namespace QRInventory
             this.Close();
         }
 
-        public void shorten()
+        public void showitems()
         {
-            string a1 = tbName.Text.Substring(0, 2).ToUpper();
-            string a2 = tbName.Text.Substring(tbName.Text.Length - 1).ToUpper();
-            string b1 = tbBrand.Text.Substring(0, 3).ToUpper();
-            string b2 = tbBrand.Text.Substring(tbBrand.Text.Length - 1).ToUpper();
-            tbShort.Text = a1 + a2 + " " + b1 + b2;
-        }
-
-        private void SAVE_Click(object sender, RoutedEventArgs e)
-        {
-            shorten();
-
-            Inventory inv = new Inventory()
+            using (SQLiteConnection connection = new SQLiteConnection(App.dbPath))
             {
-                Name_Full = tbName.Text,
-                Brand = tbBrand.Text,
-                Item_Type = tbType.Text,
-                Description = tbDescription.Text,
-                Name_Short = tbShort.Text
-            };
-
-            using (SQLiteConnection connection = new SQLiteConnection(App.dbPath)){
                 connection.CreateTable<Inventory>();
-                connection.Insert(inv);
+                items = (connection.Table<Inventory>().ToList()).OrderBy(i => i.Item_ID).ToList();
             }
 
-            Close();
+            if(items != null)
+            {
+                itemList.ItemsSource = items;
+            }
         }
     }
 }

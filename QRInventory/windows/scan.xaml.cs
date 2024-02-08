@@ -1,10 +1,12 @@
 ﻿using AForge.Video;
 using AForge.Video.DirectShow;
 using System;
+using QRInventory.Classes;
+using SQLite;
+using System.Linq;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -27,25 +29,31 @@ namespace QRInventory.windows
     /// </summary>
     public partial class scan : Window
     {
-        private FilterInfoCollection CapturDevice;
+        private FilterInfoCollection CaptureDevice;
         private VideoCaptureDevice FinalFrame;
 
         public scan()
         {
             InitializeComponent();
 
-            CapturDevice = new FilterInfoCollection(FilterCategory.VideoInputDevice);
-            foreach (FilterInfo Device in CapturDevice)
+            CaptureDevice = new FilterInfoCollection(FilterCategory.VideoInputDevice);
+            foreach (FilterInfo Device in CaptureDevice)
                 CbCameras.Items.Add(Device.Name);
             CbCameras.SelectedIndex = 0;
             FinalFrame = new VideoCaptureDevice();
             
         }
 
+        private void HOME_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindow mainWindow = new MainWindow();
+            mainWindow.Show();
+            this.Close();
+        }
 
         private void SCAN_Click(object sender, RoutedEventArgs e)
         {
-            FinalFrame = new VideoCaptureDevice(CapturDevice[CbCameras.SelectedIndex].MonikerString);
+            FinalFrame = new VideoCaptureDevice(CaptureDevice[CbCameras.SelectedIndex].MonikerString);
             FinalFrame.NewFrame += new NewFrameEventHandler(FinalFrame_NewFrame);
             FinalFrame.Start();
         }
@@ -58,9 +66,9 @@ namespace QRInventory.windows
                 this.Dispatcher.Invoke(() =>
                 {
                     string test = FindQrCodeInImage(bmp);
-                    if (test != null)
-                        QrcodeChecker(test);
-                    imgQR.Source = imageSource(bmp);
+                    if (test != null) 
+                        QRCodeCheck(test);
+                    imgQR.Source = ImageSource(bmp);
 
                 });
             }
@@ -70,15 +78,37 @@ namespace QRInventory.windows
             }
         }
 
-        private void QrcodeChecker(string qrCode)
+        private void QRCodeCheck(string qrCodeImage)
         {
             if (FinalFrame != null)
             {
                 FinalFrame.SignalToStop();
-                FinalFrame.NewFrame -= new NewFrameEventHandler(FinalFrame_NewFrame); FinalFrame = null;
+                FinalFrame.NewFrame -= new NewFrameEventHandler(FinalFrame_NewFrame);
+                FinalFrame = null;
             }
 
-            tb.Text = qrCode;
+            // Use the Inventory class method to get the entry based on QRCodeImage
+            Inventory inventoryItem = Inventory.GetByQRCodeImage(qrCodeImage);
+
+            if (inventoryItem != null)
+            {
+                // You have found the item in the database based on QRCodeImage
+                // You can now use the 'inventoryItem' object to access the properties
+                // For example, to get the Name_Full, Amount, and QRCodeImage:
+                string itemName = inventoryItem.Name_Full;
+                string itemAmount = inventoryItem.Amount;
+                byte[] itemQRCodeImage = inventoryItem.QRCodeImage;
+
+                // Do whatever you need with the retrieved data
+                // For example, display it in your UI or perform further actions
+                tbItemName.Text = itemName;
+                tbAmount.Text = itemAmount;
+            }
+            else
+            {
+                // Item not found in the database
+                MessageBox.Show("Item not found.");
+            }
         }
 
         private string FindQrCodeInImage(Bitmap bmp)
@@ -96,7 +126,7 @@ namespace QRInventory.windows
             return result.Text;
         }
 
-        private ImageSource imageSource(Bitmap bmp)
+        private ImageSource ImageSource(Bitmap bmp)
         {
             {
                 using (MemoryStream memory = new MemoryStream())
@@ -112,6 +142,7 @@ namespace QRInventory.windows
                 }
             }
         }
+
     }
 }
 

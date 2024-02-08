@@ -5,14 +5,54 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:QRInventory.windows"
         mc:Ignorable="d"
-        Title="scan" Height="720" Width="960">
+        Title="scan"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="CanResize"
+        WindowState="Maximized"
+        MinHeight="720"
+        MinWidth="960"
+        >
+    <Window.Resources>
+        <Style TargetType="TextBox">
+            <Setter Property="FontSize" Value="24"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+        <Style TargetType="ComboBox">
+            <Setter Property="FontSize" Value="24"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="FontSize" Value="30"/>
+            <Setter Property="Height" Value="60"/>
+            <Setter Property="Width" Value="300"/>
+            <Setter Property="MinHeight" Value="60"/>
+            <Setter Property="MinWidth" Value="300"/>
+        </Style>
+    </Window.Resources>
 
-    <Grid>
-        <StackPanel>
-            <ComboBox x:Name="CbCameras" HorizontalAlignment="Left" Width="960" FontSize="24px"/>
-            <TextBox x:Name="tb" HorizontalAlignment="Left" FontSize="24px" Width="960"  Text="TextBox" Background="LightGray"/>
-            <Image x:Name="imgQR" Height="400"/>
-            <Button x:Name="SCAN" Content="SCAN" Height="100" Width="600" Click="SCAN_Click" FontSize="36px"></Button>
-        </StackPanel>
+    <Grid Margin="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="4*" MinHeight="300"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <ComboBox x:Name="CbCameras" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="4"/>
+        <Image x:Name="imgQR" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="4"/>
+        <TextBox x:Name="tbUUID" Text="TextBox" Background="LightGray" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="4" IsReadOnly="True"/>
+        <TextBox x:Name="tbItemName" Text="TextBox" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" IsReadOnly="True"/>
+        <TextBox x:Name="tbAmount" Grid.Row="3" Grid.Column="3" Grid.ColumnSpan="2" IsReadOnly="True"/>
+        <Button x:Name="HOME" Content="CANCEL" Click="HOME_Click" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2"/>
+        <Button x:Name="SCAN" Content="SCAN/REFRESH" Click="SCAN_Click" Grid.Row="4" Grid.Column="3" Grid.ColumnSpan="2"></Button>
     </Grid>
 </Window>
